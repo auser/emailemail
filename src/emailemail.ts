@@ -87,7 +87,7 @@ export class EmailEmail {
       senderAddress: this.opts.sender_email_address,
     };
 
-    debug(`Sending email`);
+    debug(`Sending email: `, options);
     return this.provider.sendEmail(options);
   }
 
