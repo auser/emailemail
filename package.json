@@ -1,11 +1,12 @@
 {
-  "name": "@auser/emailemail",
+  "name": "emailemail",
   "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "/lib"
+    "/lib",
+    "/templates"
   ],
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
@@ -13,7 +14,7 @@
     "test": "jest"
   },
   "publishConfig": {
-    "@auser:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [],
   "author": "",
