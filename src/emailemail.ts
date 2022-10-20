@@ -99,12 +99,13 @@ export class EmailEmail {
     context: any = {}
   ): Promise<string> {
     const template_name = `${name}.${type}`;
-    debug(`Looking for template: ${template_name}`);
     if (!this.compiled_templates[template_name]) {
       if (content) {
+        debug(`Template content passed in: ${content}`);
         const template = Handlebars.compile(content);
         this.compiled_templates[template_name] = template;
       } else {
+        debug(`Looking for template: ${template_name}`);
         const files = this.opts.template_directory
           ? glob.sync(
               join(this.opts.template_directory, "**/*.{hbs,html,txt}"),
