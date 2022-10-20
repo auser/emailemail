@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
+    "postbuild": "cp -r ./templates ./lib",
     "test": "jest"
   },
   "publishConfig": {
