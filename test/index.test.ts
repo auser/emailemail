@@ -81,4 +81,35 @@ describe("index", () => {
       expect.any(Function)
     );
   });
+
+  it("it can use a multi-level context opbject a template content when passed in", async () => {
+    const e = new EmailEmail(defaultEmailOptions);
+
+    await e.sendEmail(
+      {
+        name: "bob",
+        subject: "Welcome",
+        toAddresses: "bob@company.com",
+        ccAddresses: null,
+        bccAddresses: null,
+      },
+      undefined,
+      { name: "bob", authority: { level: 2 } },
+      `Reset your password, {{email.name}}, You are a level: {{authority.level}}`
+    );
+
+    expect(sendEmail).toBeCalledWith(
+      expect.objectContaining({
+        Message: expect.objectContaining({
+          Body: expect.objectContaining({
+            Text: {
+              Charset: "utf-8",
+              Data: "Reset your password, bob, You are a level: 2",
+            },
+          }),
+        }),
+      }),
+      expect.any(Function)
+    );
+  });
 });
