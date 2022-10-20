@@ -72,10 +72,12 @@ export class EmailEmail {
       context
     );
 
+    const compiledSubject = Handlebars.compile(subject)(context);
+
     const options: EmailOpts = {
       compiled_html_template,
       compiled_text_template,
-      subject,
+      subject: compiledSubject,
       destination: {
         toAddresses: Array.isArray(toAddresses) ? toAddresses : [toAddresses],
         ccAddresses: ccAddresses ?? null,

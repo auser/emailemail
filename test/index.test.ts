@@ -112,4 +112,33 @@ describe("index", () => {
       expect.any(Function)
     );
   });
+
+  it("it compile the subject line with template", async () => {
+    const e = new EmailEmail(defaultEmailOptions);
+
+    await e.sendEmail(
+      {
+        name: "bob",
+        subject: "Welcome to the party {{ email.name }}",
+        toAddresses: "bob@company.com",
+        ccAddresses: null,
+        bccAddresses: null,
+      },
+      undefined,
+      { name: "bob", authority: { level: 2 } },
+      `Reset your password, {{email.name}}, You are a level: {{authority.level}}`
+    );
+
+    expect(sendEmail).toBeCalledWith(
+      expect.objectContaining({
+        Message: expect.objectContaining({
+          Subject: expect.objectContaining({
+            Charset: "utf-8",
+            Data: "Welcome to the party bob",
+          }),
+        }),
+      }),
+      expect.any(Function)
+    );
+  });
 });
