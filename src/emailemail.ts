@@ -56,19 +56,20 @@ export class EmailEmail {
     emailOpts: EmailInstance,
     template_name?: string,
     rawContext: any = {},
-    template_content?: string
+    html_template_content?: string,
+    text_template_content?: string
   ): Promise<boolean> {
     const context = { email: emailOpts, ...rawContext };
     const { toAddresses, subject, ccAddresses, bccAddresses } = emailOpts;
     const compiled_html_template = await this.compile_html_template(
       template_name,
-      template_content,
+      html_template_content,
       context
     );
     const compiled_text_template = await this.compile_template(
       template_name,
       "txt",
-      template_content,
+      text_template_content,
       context
     );
 
@@ -98,6 +99,7 @@ export class EmailEmail {
     context: any = {}
   ): Promise<string> {
     const template_name = `${name}.${type}`;
+    debug(`Looking for template: ${template_name}`);
     if (!this.compiled_templates[template_name]) {
       if (content) {
         const template = Handlebars.compile(content);

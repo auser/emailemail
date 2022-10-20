@@ -54,7 +54,7 @@ describe("index", () => {
     );
   });
 
-  it("it generates a template content when passed in", async () => {
+  it("it generates a html template content when passed in", async () => {
     const e = new EmailEmail(defaultEmailOptions);
 
     await e.sendEmail(
@@ -67,6 +67,39 @@ describe("index", () => {
       },
       undefined,
       { name: "bob" },
+      "<h1>Reset your password, {{email.name}}</h1>",
+      "Reset your password, {{email.name}}"
+    );
+
+    expect(sendEmail).toBeCalledWith(
+      expect.objectContaining({
+        Message: expect.objectContaining({
+          Body: expect.objectContaining({
+            Html: {
+              Charset: "utf-8",
+              Data: "<h1>Reset your password, bob</h1>",
+            },
+          }),
+        }),
+      }),
+      expect.any(Function)
+    );
+  });
+
+  it("it generates a text template content when passed in", async () => {
+    const e = new EmailEmail(defaultEmailOptions);
+
+    await e.sendEmail(
+      {
+        name: "bob",
+        subject: "Welcome",
+        toAddresses: "bob@company.com",
+        ccAddresses: null,
+        bccAddresses: null,
+      },
+      undefined,
+      { name: "bob" },
+      "<h1>Reset your password, {{email.name}}</h1>",
       "Reset your password, {{email.name}}"
     );
 
@@ -95,6 +128,7 @@ describe("index", () => {
       },
       undefined,
       { name: "bob", authority: { level: 2 } },
+      `<h1>Reset your password, {{email.name}}, You are a level: {{authority.level}}</h1>`,
       `Reset your password, {{email.name}}, You are a level: {{authority.level}}`
     );
 
