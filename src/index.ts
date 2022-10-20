@@ -3,9 +3,9 @@ import glob from "glob";
 import Handlebars from "handlebars";
 import juice from "juice";
 import { join } from "path";
-import { EmailInstance, EmailOpts, ProviderOpts } from "~/types";
 import { EmailEmailAWSProvider } from "./providers/aws";
 import { Provider } from "./providers/provider";
+import { EmailInstance, EmailOpts, ProviderOpts } from "./types";
 
 const debug = require("debug")("emailemail:EmailEmail");
 

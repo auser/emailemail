@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { defaultCharset, EmailOpts, ProviderOpts } from "~/types";
+import { defaultCharset, EmailOpts, ProviderOpts } from "../types";
 import { Provider } from "./provider";
 const debug = require("debug")(`emailemail:provider:aws`);
 

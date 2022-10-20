@@ -1,4 +1,4 @@
-import { EmailOpts } from "~/types";
+import { EmailOpts } from "../types";
 
 export interface Provider {
   /**
