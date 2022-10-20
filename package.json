@@ -11,8 +11,11 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "postbuild": "cp -r ./templates ./lib",
+    "postpublish": "git push && git push --tags",
+    "prepublishOnly": "npm test",
     "test": "jest"
   },
+  "typings": "./lib/index.d.ts",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
