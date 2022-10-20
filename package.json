@@ -1,5 +1,5 @@
 {
-  "name": "emailemail",
+  "name": "@auser/emailemail",
   "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
