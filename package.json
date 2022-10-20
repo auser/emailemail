@@ -1,5 +1,5 @@
 {
-  "name": "@auser/emailemail",
+  "name": "emailemail",
   "version": "1.0.5",
   "description": "",
   "main": "lib/index.js",
@@ -16,9 +16,6 @@
     "test": "jest"
   },
   "typings": "./lib/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
