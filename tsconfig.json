@@ -1,6 +1,6 @@
 {
   "exclude": ["**/*.test.ts"],
-  "include": ["**/*.ts", "**/*.tsx", ".eslintrc.js", "./jest.config.ts"],
+  "include": ["src/**/*.ts", ".eslintrc.js", "./jest.config.ts"],
   "compilerOptions": {
     "lib": [
       "DOM",
@@ -16,7 +16,7 @@
     "strict": true,
     "declaration": true,
     "baseUrl": ".",
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./lib",
     "typeRoots": [
       "./node_modules/@types",
