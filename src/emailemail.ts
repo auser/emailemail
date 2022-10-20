@@ -1,3 +1,4 @@
+import { debug as d } from "debug";
 import { readFileSync } from "fs";
 import glob from "glob";
 import Handlebars from "handlebars";
@@ -5,13 +6,11 @@ import juice from "juice";
 import { join } from "path";
 import { EmailEmailAWSProvider } from "./providers/aws";
 import { Provider } from "./providers/provider";
-import { EmailInstance, EmailOpts, ProviderOpts } from "./types";
+import { EmailInstance, EmailOpts } from "./types";
 
 export * from "./types";
 
-const debug = require("debug")("emailemail:EmailEmail");
-
-require("env2")(".env");
+const debug = d("emailemail:EmailEmail");
 
 const DEFAULT_TEMPLATE_DIRECTORY = join(__dirname, "..", "templates");
 
@@ -19,19 +18,21 @@ export type EmailProvider = "aws";
 
 export type EmailEmailOpts = {
   provider_name: EmailProvider;
-  provider_opts?: ProviderOpts;
+  provider_opts?: any;
   template_directory?: string;
-  sender_email_address?: string;
-  reply_to_address?: string;
+  sender_email_address: string;
+  reply_to_address: string;
 };
 
 const defaults: EmailEmailOpts = {
   provider_name: "aws",
   provider_opts: {},
   template_directory: DEFAULT_TEMPLATE_DIRECTORY,
-  sender_email_address: process.env.SENDER_EMAIL_ADDRESS,
+  sender_email_address: process.env.SENDER_EMAIL_ADDRESS ?? "no-reply@ari.io",
   reply_to_address:
-    process.env.REPLY_TO_ADDRESS ?? process.env.SENDER_EMAIL_ADDRESS,
+    process.env.REPLY_TO_ADDRESS ??
+    process.env.SENDER_EMAIL_ADDRESS ??
+    "unknown@ari.io",
 };
 
 export class EmailEmail {
@@ -58,7 +59,7 @@ export class EmailEmail {
     template_content?: string
   ): Promise<boolean> {
     const context = { email: emailOpts, ...rawContext };
-    const { toAddresses, subject, name, ccAddresses, bccAddresses } = emailOpts;
+    const { toAddresses, subject, ccAddresses, bccAddresses } = emailOpts;
     const compiled_html_template = await this.compile_html_template(
       template_name,
       template_content,
@@ -80,8 +81,8 @@ export class EmailEmail {
         ccAddresses: ccAddresses ?? null,
         bccAddresses: bccAddresses ?? null,
       },
-      replyToAddress: this.opts.reply_to_address!,
-      senderAddress: this.opts.sender_email_address!,
+      replyToAddress: this.opts.reply_to_address,
+      senderAddress: this.opts.sender_email_address,
     };
 
     debug(`Sending email`);
@@ -100,7 +101,7 @@ export class EmailEmail {
         const template = Handlebars.compile(content);
         this.compiled_templates[template_name] = template;
       } else {
-        let files = this.opts.template_directory
+        const files = this.opts.template_directory
           ? glob.sync(
               join(this.opts.template_directory, "**/*.{hbs,html,txt}"),
               { ignore: ["**/*.css"] }
@@ -129,21 +130,27 @@ export class EmailEmail {
     content?: string,
     context: any = {}
   ): Promise<string> {
-    return new Promise(async (resolve, reject) => {
-      const template = await this.compile_template(name, "html", content);
-      if (!template) {
-        return reject(`Template could not be created`);
-      }
+    // return new Promise(async (resolve, reject) => {
+    const template = await this.compile_template(
+      name,
+      "html",
+      content,
+      context
+    );
+    if (!template) {
+      throw new Error(`Template could not be created`);
+    }
+    return new Promise((resolve, reject) => {
       juice.juiceResources(
         template,
         {
           webResources: {
-            relativeTo: this.opts.template_directory!,
+            relativeTo: this.opts.template_directory ?? process.cwd(),
           },
         },
         (err, html) => {
           if (err) {
-            return reject(err);
+            reject(err);
           }
           resolve(html);
         }

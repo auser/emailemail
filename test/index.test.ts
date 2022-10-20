@@ -1,7 +1,14 @@
+import { EmailEmailOpts } from "../src/emailemail";
 import { EmailEmail } from "../src/index";
 
 // jest.mock("../src/providers/aws");
 jest.mock("aws-sdk");
+
+const defaultEmailOptions: EmailEmailOpts = {
+  provider_name: "aws",
+  reply_to_address: "nobody@company.com",
+  sender_email_address: "team@company.com",
+};
 
 describe("index", () => {
   let sendEmail: jest.Func;
@@ -18,10 +25,10 @@ describe("index", () => {
   afterEach(() => jest.clearAllMocks());
 
   it("can be created", async () => {
-    expect(() => new EmailEmail({ provider_name: "aws" })).not.toThrow();
+    expect(() => new EmailEmail(defaultEmailOptions)).not.toThrow();
   });
   it("it generates a template content for default email template in local directory (welcome)", async () => {
-    const e = new EmailEmail({ provider_name: "aws" });
+    const e = new EmailEmail(defaultEmailOptions);
 
     await e.sendEmail(
       {
@@ -42,14 +49,13 @@ describe("index", () => {
             Text: { Charset: "utf-8", Data: "Welcome bob" },
           }),
         }),
-        Source: "me@ari.io",
       }),
       expect.any(Function)
     );
   });
 
   it("it generates a template content when passed in", async () => {
-    const e = new EmailEmail({ provider_name: "aws" });
+    const e = new EmailEmail(defaultEmailOptions);
 
     await e.sendEmail(
       {
@@ -71,7 +77,6 @@ describe("index", () => {
             Text: { Charset: "utf-8", Data: "Reset your password, bob" },
           }),
         }),
-        Source: "me@ari.io",
       }),
       expect.any(Function)
     );

@@ -1,9 +1,11 @@
 import AWS from "aws-sdk";
-import { defaultCharset, EmailOpts, ProviderOpts } from "../types";
+import { debug as d } from "debug";
+import { defaultCharset, EmailOpts } from "../types";
 import { Provider } from "./provider";
-const debug = require("debug")(`emailemail:provider:aws`);
 
-export type EmailEmailAWSOpts = ProviderOpts & {
+const debug = d(`emailemail:provider:aws`);
+
+export type EmailEmailAWSOpts = {
   region?: string;
   profile?: string;
 };
@@ -19,7 +21,7 @@ export class EmailEmailAWSProvider implements Provider {
 
   constructor(opts: EmailEmailAWSOpts = {}) {
     this.opts = opts = { ...defaults, ...opts };
-    this.region = this.opts.region ?? defaults.region!;
+    this.region = this.opts.region ?? defaults.region ?? "us-east-1";
     this.ses = new AWS.SES();
 
     AWS.config.region = this.region;

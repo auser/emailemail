@@ -2,17 +2,12 @@
   "exclude": ["**/*.test.ts"],
   "include": ["./src/**/*.ts"],
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2019"
-    ],
-    "isolatedModules": true,
+    "module": "CommonJS",
+    "lib": [ "DOM", "es2020"],
+    "target": "es2022",
+    "sourceMap": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "target": "ES2019",
     "strict": true,
     "declaration": true,
     "baseUrl": ".",
@@ -22,15 +17,6 @@
       "./node_modules/@types",
       "./src/types"
     ],
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ],
-      "@/*": [
-        "./*"
-      ]
-    },
-    "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "noEmit": false
   }

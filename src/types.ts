@@ -6,8 +6,6 @@ export type EmailInstance = {
   bccAddresses: string[] | null;
 };
 
-export type ProviderOpts = {};
-
 export type DestinationOpts = {
   toAddresses: string[];
   ccAddresses: string[] | null;
