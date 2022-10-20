@@ -1,6 +1,6 @@
 {
   "exclude": ["**/*.test.ts"],
-  "include": ["src/**/*.ts", ".eslintrc.js", "./jest.config.ts"],
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
     "lib": [
       "DOM",
@@ -16,7 +16,7 @@
     "strict": true,
     "declaration": true,
     "baseUrl": ".",
-    "rootDir": ".",
+    "rootDir": "./src",
     "outDir": "./lib",
     "typeRoots": [
       "./node_modules/@types",
@@ -32,6 +32,6 @@
     },
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "noEmit": true
+    "noEmit": false
   }
 }
